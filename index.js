@@ -94,6 +94,12 @@ async function run() {
             const result = await touristCollection.insertOne(req.body);
             res.send(result);
         });
+        // ADD ORDER
+        app.post("/addOrders", async (req, res) => {
+            console.log(req.body);
+            const result = await ordersCollection.insertOne(req.body);
+            res.send(result);
+        });
 
         // GET ALL TOURIST
         app.get("/allTourist", async (req, res) => {
