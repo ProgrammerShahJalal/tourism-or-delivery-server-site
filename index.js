@@ -114,13 +114,21 @@ async function run() {
             console.log(result);
         });
 
-        // My Orders as a Tourist
-        app.get("/myOrders/:email", async (req, res) => {
-            const result = await touristCollection.find({
+        // My Orders (specific orders according to email)
+        app.get("/allOrders/:email", async (req, res) => {
+            const result = await ordersCollection.find({
                 email: req.params.email,
             }).toArray();
             res.send(result);
         });
+
+        // DELETE API for orders according to email
+        app.delete('/allOrders/:email', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query);
+            res.json(result);
+        })
 
     }
     finally {
