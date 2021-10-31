@@ -40,11 +40,25 @@ async function run() {
             const tour = await travelCollection.findOne(query);
             res.json(tour);
         })
-        // DELETE API
+        // GET Single Tourist
+        app.get('/allTourist/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const tour = await touristCollection.findOne(query);
+            res.json(tour);
+        })
+        // DELETE API for tours
         app.delete('/tours/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await travelCollection.deleteOne(query);
+            res.json(result);
+        })
+        // DELETE API for Tourist
+        app.delete('/allTourist/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await touristCollection.deleteOne(query);
             res.json(result);
         })
 
