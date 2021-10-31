@@ -26,6 +26,9 @@ async function run() {
         const touristDatabase = client.db('world_tourist');
         const touristCollection = touristDatabase.collection('tourist');
 
+        const bookingDatabase = client.db('booking_tour');
+        const ordersCollection = bookingDatabase.collection('orders');
+
         // GET TOUR API
         app.get('/tours', async (req, res) => {
             const cursor = travelCollection.find({});
@@ -44,8 +47,15 @@ async function run() {
         app.get('/allTourist/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
-            const tour = await touristCollection.findOne(query);
-            res.json(tour);
+            const tourist = await touristCollection.findOne(query);
+            res.json(tourist);
+        })
+        // GET Single order
+        app.get('/allOrders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const order = await ordersCollection.findOne(query);
+            res.json(order);
         })
         // DELETE API for tours
         app.delete('/tours/:id', async (req, res) => {
@@ -59,6 +69,13 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await touristCollection.deleteOne(query);
+            res.json(result);
+        })
+        // DELETE API for orders
+        app.delete('/allOrders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query);
             res.json(result);
         })
 
@@ -81,6 +98,12 @@ async function run() {
         // GET ALL TOURIST
         app.get("/allTourist", async (req, res) => {
             const result = await touristCollection.find({}).toArray();
+            res.send(result);
+            console.log(result);
+        });
+        // GET ALL ORDERS
+        app.get("/allOrders", async (req, res) => {
+            const result = await ordersCollection.find({}).toArray();
             res.send(result);
             console.log(result);
         });
