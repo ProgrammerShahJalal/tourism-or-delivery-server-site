@@ -23,6 +23,9 @@ async function run() {
         const database = client.db('world_tours');
         const travelCollection = database.collection('tours');
 
+        const touristDatabase = client.db('world_tourist');
+        const touristCollection = touristDatabase.collection('tourist');
+
         // GET TOUR API
         app.get('/tours', async (req, res) => {
             const cursor = travelCollection.find({});
@@ -53,6 +56,29 @@ async function run() {
             console.log(result);
             res.json(result);
         });
+
+        // ADD TOURIST
+        app.post("/addTourist", async (req, res) => {
+            console.log(req.body);
+            const result = await touristCollection.insertOne(req.body);
+            res.send(result);
+        });
+
+        // GET ALL TOURIST
+        app.get("/allTourist", async (req, res) => {
+            const result = await touristCollection.find({}).toArray();
+            res.send(result);
+            console.log(result);
+        });
+
+        // My Orders as a Tourist
+        app.get("/myOrders/:email", async (req, res) => {
+            const result = await touristCollection.find({
+                email: req.params.email,
+            }).toArray();
+            res.send(result);
+        });
+
     }
     finally {
         // await client.close();
